@@ -14,12 +14,12 @@
 
 ## 功能
 
-- **按文字筛字体**：输入中文/英文/emoji，缺字形就用不了的字体直接不出现
+- **按文字筛字体**：输入中文 / 英文 / emoji，缺字形就用不了的字体直接不出现
 - **实时预览**：每张卡片用该字体自身渲染你的文字，两行自动换行
 - **拼音搜索**：`weiruan` → 微软雅黑，`wryh` → 微软雅黑（首字母），`fangsong` → 仿宋
 - **模糊搜索**：`msyh` → Microsoft YaHei（子序列匹配），按前缀 > 子串 > 子序列排序
 - **字号调节**：20–72 px，卡片高度同步变化
-- **右键菜单**：打开文件位置（资源管理器定位到 ttf/ttc 并选中）、复制字体族名
+- **右键菜单**：打开文件位置（资源管理器定位到 ttf / ttc 并选中）、复制字体族名
 - **左键点击**：复制字体族名；`Ctrl+F` 聚焦搜索框
 
 ## 自己编译
@@ -41,14 +41,14 @@ cargo test --release
 
 ```
 src/main.rs    // eframe 窗口、顶部栏、卡片网格（虚拟滚动）、纹理缓存、右键菜单
-src/fonts.rs   // DirectWrite 枚举字族 + HasCharacter 逐字覆盖 + 拼音/模糊打分 + 字体文件路径
+src/fonts.rs   // DirectWrite 枚举字族 + HasCharacter 逐字覆盖 + 拼音 / 模糊打分 + 字体文件路径
 src/gdi.rs     // GDI 把文字画进位图，量行高、垂直居中，转成 egui 纹理
 ```
 
 ## 实现要点
 
 - **枚举**：`IDWriteFactory::GetSystemFontCollection`，按 family 归并，取 en-us 名给 GDI、zh-cn 名做展示
-- **覆盖检测**：`IDWriteFont::HasCharacter(codepoint)` 逐字判断，空白/控制符/变体选择符/ZWJ 不参与；
+- **覆盖检测**：`IDWriteFont::HasCharacter(codepoint)` 逐字判断，空白 / 控制符 / 变体选择符 / ZWJ 不参与；
   结果按 `(字体序号, 字符)` 缓存，重复输入直接命中
 - **搜索**：每个字族预生成归一化匹配串（英文名、中文名、全拼、首字母），`pinyin` crate 负责转拼音
 - **文件定位**：`IDWriteFontFile::GetReferenceKey` + `IDWriteLocalFontFileLoader::GetFilePathFromKey`，
@@ -59,4 +59,4 @@ src/gdi.rs     // GDI 把文字画进位图，量行高、垂直居中，转成 
 
 ## 平台
 
-Windows（DirectWrite + GDI + Shell）。换 macOS/Linux 需要替换 `fonts.rs` 的枚举与 `gdi.rs` 的栅格化。
+Windows（DirectWrite + GDI + Shell）。换 macOS / Linux 需要替换 `fonts.rs` 的枚举与 `gdi.rs` 的栅格化。
